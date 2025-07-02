@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Quotes API</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Anime Quotes Generator</h1>
+        <button onclick="fetchQuote()">Get your Quote</button>
+
+        <div id="quote-box">
+            <p id="quote">Click the button to get your Quote</p>
+            <p id="character"></p>
+            <p id="anime"></p>
+        </div>
+
+        <br><hr>
+
+        <div id="add-quote">
+            <h2>Add your own Quote</h2>
+            <form action="/quote" method="post">
+                <input type="text" name="quote" placeholder="Enter your quote" required>
+                <input type="text" name="character" placeholder="Enter character name" required>
+                <input type="text" name="anime" placeholder="Enter anime name" required>
+                <p id="form-message">Fill fields to add your own Quote</p>
+                <button type="submit">Add Quote</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        async function fetchQuote() {
+            try {
+                const response = await fetch('/quote');
+                if (!response.ok) throw new Error('Failed to fetch quote');
+
+                const data = await response.json();
+                console.log(data);  // For debugging
+                document.getElementById('quote').innerText = data.quote;
+                document.getElementById('character').innerText = `Character: ${data.character}`;
+                document.getElementById('anime').innerText = `Anime: ${data.anime}`;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
